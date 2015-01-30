@@ -1,4 +1,4 @@
-module Sorting
+module SelectionSort
 
   def selection_sort
     each_with_index do |item, index|
@@ -7,6 +7,8 @@ module Sorting
     end
     self 
   end
+
+  private
 
   def min_index(start, ending = self.length-1)
     minimum = start

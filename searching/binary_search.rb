@@ -1,11 +1,4 @@
-module Searching
-
-  def sequential_search(val)
-    each_with_index do |obj, index|
-      return index if obj == val
-    end 
-    nil
-  end
+module BinarySearch
 
 ##assumes that input array is sorted in ascending order
   def binary_search(val)
