@@ -16,5 +16,17 @@ module MergeSort
   end
 
   def merge(start, mid, ending)
+    arr = []
+    start.upto(ending) do |x| arr << self[x] end
+    i, j = start, mid+1
+    start.upto(ending) do |index|
+      if i <= mid and (arr[i] > arr[j] or j > ending)
+        self[index] = arr[i]
+        i += 1
+      else
+        self[index] = arr[j]
+        j += 1
+      end
+    end
   end
 end
