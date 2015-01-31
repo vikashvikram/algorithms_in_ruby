@@ -2,6 +2,7 @@ require_relative 'sorting/selection_sort'
 require_relative 'sorting/merge_sort'
 require_relative 'searching/binary_search'
 require_relative 'searching/sequential_search'
+require_relative 'array_inversions'
 
 class NewArray < Array
 
@@ -9,6 +10,7 @@ class NewArray < Array
 include SelectionSort
 include MergeSort
 
+include ArrayInversion
 #include searching algorithms
 include SequentialSearch
 include BinarySearch
