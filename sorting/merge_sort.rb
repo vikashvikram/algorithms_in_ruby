@@ -1,6 +1,7 @@
 module MergeSort
   def merge_sort
     partial_merge_sort(0, length-1)
+    self
   end
 
   private
@@ -16,11 +17,10 @@ module MergeSort
   end
 
   def merge(start, mid, ending)
-    arr = []
-    start.upto(ending) do |x| arr << self[x] end
-    i, j = start, mid+1
+    arr = self[start..ending]
+    i, j = 0, mid+1-start
     start.upto(ending) do |index|
-      if i <= mid and (arr[i] > arr[j] or j > ending)
+      if i <= mid-start and (j > ending-start or arr[i] < arr[j])
         self[index] = arr[i]
         i += 1
       else
