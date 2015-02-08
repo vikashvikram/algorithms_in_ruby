@@ -6,6 +6,7 @@ require_relative 'sorting/bubble_sort'
 require_relative 'searching/binary_search'
 require_relative 'searching/sequential_search'
 require_relative 'array_inversions'
+require_relative 'assignment'
 
 class NewArray < Array
 
@@ -17,6 +18,7 @@ include BubbleSort
 include QuickSort
 
 include ArrayInversion
+include Assignment2
 #include searching algorithms
 include SequentialSearch
 include BinarySearch
