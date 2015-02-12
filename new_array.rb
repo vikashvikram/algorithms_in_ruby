@@ -7,6 +7,7 @@ require_relative 'searching/binary_search'
 require_relative 'searching/sequential_search'
 require_relative 'array_inversions'
 require_relative 'rselect'
+require_relative 'dselect'
 
 class NewArray < Array
 
@@ -19,6 +20,7 @@ include QuickSort
 
 include ArrayInversion
 include RSelect
+include DSelect
 #include searching algorithms
 include SequentialSearch
 include BinarySearch
