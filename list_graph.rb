@@ -7,8 +7,8 @@ class Graph
 	def initialize(number_of_vertices = VERTEX_COUNT)
 		@vertices, @edges = Array.new(number_of_vertices), Array.new(number_of_vertices)
 		number_of_vertices.times do |x|
-			@vertices[x] = Node.new(x+1)
 			@edges[x] = []
+			@vertices[x] = Node.new(x+1, @edges[x])
 		end
 	end
 
@@ -41,13 +41,10 @@ class Graph
 	end
 
 	class Node
-		attr_reader :label
-		def initialize(label)
+		attr_reader :label, :edges
+		def initialize(label, edges)
 			@label = label
-		end
-
-		def edges
-			@edges[label-1]
+			@edges = edges
 		end
 
 		def add_edge(e)
