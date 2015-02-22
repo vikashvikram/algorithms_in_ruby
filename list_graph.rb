@@ -208,6 +208,62 @@ class DirectedGraph
 		topo_order
 	end
 
+	def strongly_connected_components
+		@explored_nodes = Array.new(vertices.count, false)
+		@finishing_time_arr = Array.new(vertices.count)
+		@scc = Array.new
+		@finishing_time = 0
+		calculate_finishing_time
+		@leaders = scc_call_order
+		calculate_scc
+		puts "#{@scc}"
+	end
+
+	def calculate_finishing_time
+		vertices.count.times do |index|
+			label = index+1
+			dfs_finishing_time(label) unless @explored_nodes[index]
+		end
+	end
+
+	def dfs_finishing_time(label)
+		@explored_nodes[label-1] = true
+		vertex(label).incoming_edges.map(&:tail).each do |child|
+			dfs_finishing_time(child) unless @explored_nodes[child-1]
+		end
+		@finishing_time += 1
+		@finishing_time_arr[label-1] = @finishing_time
+	end
+
+	def scc_call_order
+		topo_order = Array.new(vertices.count)
+		@finishing_time_arr.each_with_index do |val, index|
+			topo_order[val-1] = index+1
+		end
+		topo_order.reverse
+	end
+
+	def calculate_scc
+		@scc_explored_nodes = Array.new(vertices.count, false)
+		@leaders.each do |label|
+			unless @scc_explored_nodes[label-1]
+				(component = []) << label
+				@scc << dfs_scc(label, component)
+			end
+		end
+	end
+
+	def dfs_scc(label, component)
+		@scc_explored_nodes[label-1] = true
+		vertex(label).edges.map(&:head).each do |child|
+			unless @scc_explored_nodes[child-1]
+				component.push(child)
+				dfs_scc(child, component)
+			end
+		end
+		component.uniq
+	end
+
 	private :dfs_topological_order, :topological_order
 
 	class Node
