@@ -180,6 +180,36 @@ class DirectedGraph
 		vertex(edge.head).remove_incoming_edge(edge)
 	end
 
+	#directed connected acyclic graphs only
+	def topological_sort
+		@explored_nodes = Array.new(vertices.count, false)
+		@current_label = vertices.count
+		@topological_order = Array.new(vertices.count, nil)
+		vertices.count.times do |label|
+			dfs_topological_order(label) unless @explored_nodes[label-1]
+		end
+		topological_order
+	end
+
+	def dfs_topological_order(label)
+		@explored_nodes[label-1] = true
+		vertex(label).edges.map(&:head).each do |child|
+			dfs_topological_order(child) unless @explored_nodes[child-1]
+		end
+		@topological_order[label-1] = @current_label
+		@current_label -= 1
+	end
+
+	def topological_order
+		topo_order = Array.new(vertices.count)
+		@topological_order.each_with_index do |val, index|
+			topo_order[val-1] = index+1
+		end
+		topo_order
+	end
+
+	private :dfs_topological_order, :topological_order
+
 	class Node
 		attr_reader :label, :edges, :incoming_edges
 		def initialize(label=nil, edges=nil, incoming_edges=nil)
