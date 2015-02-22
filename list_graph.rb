@@ -2,7 +2,6 @@
 #undirected graph
 class UndirectedGraph
 	VERTEX_COUNT = 200
-	INPUT_FILE = 'kargerMinCut.txt' #tab separatedintergers in each line ranging from 1 to VERTEX_COUNT 
 	attr_reader :vertices, :edges
 	def initialize(number_of_vertices = VERTEX_COUNT)
 		@vertices, @edges = Array.new(number_of_vertices), Array.new(number_of_vertices)
@@ -41,6 +40,30 @@ class UndirectedGraph
 			vertex(label).remove_edge(edge)
 		end
 	end
+
+	def shortest_path(node1, node2)
+		@queue = Array.new
+		@explored = Array.new(vertices.count, false)
+		@explored[node1.label-1] = true
+		@queue.push([node1.label, 0])
+		calculate_shortest_path(node2)
+	end
+
+	def calculate_shortest_path(dest)
+		while entry = @queue.shift
+			node, level = entry
+			return level if vertex(node)==dest
+			children = vertex(node).edges.map(&:node_labels).flatten.uniq
+			children.each do |child|
+				unless @explored[child-1]
+					@explored[child-1] = true
+					@queue.push([child, level+1])
+				end
+			end
+		end
+	end
+
+	private :calculate_shortest_path
 
 	class Node
 		attr_reader :label, :edges
@@ -82,7 +105,6 @@ end
 #directed graph
 class DirectedGraph
 	VERTEX_COUNT = 200
-	INPUT_FILE = 'kargerMinCut.txt' #tab separatedintergers in each line ranging from 1 to VERTEX_COUNT 
 	attr_reader :vertices, :edges, :incoming_edges
 	def initialize(number_of_vertices = VERTEX_COUNT)
 		@vertices, @edges, @incoming_edges = Array.new(number_of_vertices), Array.new(number_of_vertices), Array.new(number_of_vertices)
