@@ -61,9 +61,40 @@ class UndirectedGraph
 				end
 			end
 		end
+		return nil
 	end
 
-	private :calculate_shortest_path
+	def connected_components
+		@explored_nodes = Array.new(vertices.count, false)
+		@connected_components = Array.new
+		@bfs_queue = Array.new
+		vertices.count.times do |index|
+			label = index+1
+			unless @explored_nodes[index]
+				@explored_nodes[index] = true
+				(connected_component = []) << label
+				@bfs_queue << label
+				@connected_components << bfs_connected_components(connected_component)
+			end
+		end
+		@connected_components
+	end
+
+	def bfs_connected_components(connected_component)
+		while label = @bfs_queue.shift
+			children = vertex(label).edges.map(&:node_labels).flatten.uniq
+			children.each do |child|
+				unless @explored_nodes[child-1]
+					@explored_nodes[child-1] = true
+					@bfs_queue.push(child)
+					connected_component.push(child)
+				end
+			end
+		end
+		connected_component.uniq
+	end
+
+	private :calculate_shortest_path, :bfs_connected_components
 
 	class Node
 		attr_reader :label, :edges
