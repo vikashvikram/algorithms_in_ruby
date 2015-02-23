@@ -213,19 +213,19 @@ class DirectedGraph
 		@finishing_time_arr = Array.new(vertices.count)
 		@scc = Array.new
 		@dfs_queue = Array.new
+		@finishing_time_queue = Array.new
 		@finishing_time = 0
 		calculate_finishing_time
-		puts "#{@finishing_time_arr}"
-		#@leaders = scc_call_order
-		#puts "#{@leaders}"
-		#calculate_scc
-		#puts "#{@scc.map(&:count).sort.reverse.take(5)}"
+		@leaders = scc_call_order
+		calculate_scc
+		puts "#{@scc.map(&:count).sort.reverse.take(5)}"
 	end
 
 	def calculate_finishing_time
 		vertices.count.times do |index|
 			label = index+1
 			unless @explored_nodes[index]
+				@explored_nodes[index] = true
 				@dfs_queue.push(label)
 				dfs_finishing_time
 			end
@@ -234,10 +234,15 @@ class DirectedGraph
 
 	def dfs_finishing_time
 		while label = @dfs_queue.pop
-			@explored_nodes[label-1] = true
 			vertex(label).incoming_edges.map(&:tail).each do |child|
-				@dfs_queue.push(child) unless @explored_nodes[child-1]
+				unless @explored_nodes[child-1]
+					@explored_nodes[child-1] = true
+					@dfs_queue.push(child)
+				end
 			end
+			@finishing_time_queue.push(label)
+		end
+		while label = @finishing_time_queue.pop
 			@finishing_time += 1
 			@finishing_time_arr[label-1] = @finishing_time
 		end

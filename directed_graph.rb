@@ -30,7 +30,10 @@ class DirectedGraph
 	def calculate_finishing_time
 		VERTEX_COUNT.times do |index|
 			label = index+1
-			dfs_finishing_time(label) unless @explored_nodes[label.to_s]
+			unless @explored_nodes[label.to_s]
+				@dfs_queue.push(label)
+				dfs_finishing_time
+			end
 		end
 	end
 

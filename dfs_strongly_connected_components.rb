@@ -1,9 +1,9 @@
 require_relative "./list_graph"
-#VERTEX_COUNT = 875714
-VERTEX_COUNT = 8
+VERTEX_COUNT = 875714
+#VERTEX_COUNT = 14
 #INPUT_FILE = 'stronglyConnectedComponents1.txt'
-#INPUT_FILE = 'SCC.txt'
-INPUT_FILE = 'test1.txt'
+INPUT_FILE = 'SCC.txt'
+#INPUT_FILE = 'test1.txt'
 graph = DirectedGraph.new(VERTEX_COUNT)
 #input = File.readlines(INPUT_FILE)
 File.open(INPUT_FILE).each do |each_vertex|
