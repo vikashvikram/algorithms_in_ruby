@@ -212,27 +212,35 @@ class DirectedGraph
 		@explored_nodes = Array.new(vertices.count, false)
 		@finishing_time_arr = Array.new(vertices.count)
 		@scc = Array.new
+		@dfs_queue = Array.new
 		@finishing_time = 0
 		calculate_finishing_time
-		@leaders = scc_call_order
-		calculate_scc
-		puts "#{@scc}"
+		puts "#{@finishing_time_arr}"
+		#@leaders = scc_call_order
+		#puts "#{@leaders}"
+		#calculate_scc
+		#puts "#{@scc.map(&:count).sort.reverse.take(5)}"
 	end
 
 	def calculate_finishing_time
 		vertices.count.times do |index|
 			label = index+1
-			dfs_finishing_time(label) unless @explored_nodes[index]
+			unless @explored_nodes[index]
+				@dfs_queue.push(label)
+				dfs_finishing_time
+			end
 		end
 	end
 
-	def dfs_finishing_time(label)
-		@explored_nodes[label-1] = true
-		vertex(label).incoming_edges.map(&:tail).each do |child|
-			dfs_finishing_time(child) unless @explored_nodes[child-1]
+	def dfs_finishing_time
+		while label = @dfs_queue.pop
+			@explored_nodes[label-1] = true
+			vertex(label).incoming_edges.map(&:tail).each do |child|
+				@dfs_queue.push(child) unless @explored_nodes[child-1]
+			end
+			@finishing_time += 1
+			@finishing_time_arr[label-1] = @finishing_time
 		end
-		@finishing_time += 1
-		@finishing_time_arr[label-1] = @finishing_time
 	end
 
 	def scc_call_order
@@ -247,21 +255,24 @@ class DirectedGraph
 		@scc_explored_nodes = Array.new(vertices.count, false)
 		@leaders.each do |label|
 			unless @scc_explored_nodes[label-1]
-				(component = []) << label
-				@scc << dfs_scc(label, component)
+				(@components = []) << label
+				@dfs_queue.push(label)
+				dfs_scc
 			end
 		end
 	end
 
-	def dfs_scc(label, component)
-		@scc_explored_nodes[label-1] = true
-		vertex(label).edges.map(&:head).each do |child|
-			unless @scc_explored_nodes[child-1]
-				component.push(child)
-				dfs_scc(child, component)
+	def dfs_scc
+		while label = @dfs_queue.pop
+			@scc_explored_nodes[label-1] = true
+			vertex(label).edges.map(&:head).each do |child|
+				unless @scc_explored_nodes[child-1]
+					@components.push(child)
+					@dfs_queue.push(child)
+				end
 			end
 		end
-		component.uniq
+		@scc << @components.uniq
 	end
 
 	private :dfs_topological_order, :topological_order
