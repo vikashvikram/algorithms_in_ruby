@@ -41,6 +41,10 @@ class UndirectedGraph
 		end
 	end
 
+##################SHORTEST PATH ALGO USING BREADTH FIRST SEARCH######################
+#g : Undirected graph object and node1, node2 are nodes in g
+#g.shortest_path(node1, node2) to calculate shortest path between node1 and node1
+#start BFS from node1 and set level 0. If you encounter node2 at level x then shortest distance is x
 	def shortest_path(node1, node2)
 		@queue = Array.new
 		@explored = Array.new(vertices.count, false)
@@ -63,6 +67,14 @@ class UndirectedGraph
 		end
 		return nil
 	end
+
+###############################END#################################
+
+###############################CONNECTED COMPONENTS USING BREADTH FIRST SEARCH######################
+#g is Directed Graph object
+#g.connected_components will return all connecetd components in graph g
+#ALGO:
+#start BFS on each node (provided not already explored). Include all nodes that are not already explored
 
 	def connected_components
 		@explored_nodes = Array.new(vertices.count, false)
@@ -93,6 +105,7 @@ class UndirectedGraph
 		end
 		connected_component.uniq
 	end
+######################################END#################################
 
 	private :calculate_shortest_path, :bfs_connected_components
 
@@ -180,6 +193,13 @@ class DirectedGraph
 		vertex(edge.head).remove_incoming_edge(edge)
 	end
 
+#################################TOPOLOGICAL SORT USING DEPTH FIRST SEARCH###############################
+#g: Connected Directed Acyclic Graph object
+#g.topological_order will return labels of all nodes of graph in topological order
+#ALGO:
+#SET counter to total nodes count
+#start depth first on each node (if not explored already). whereever DFS finishes, assign the current counter
+#arange all node labels in order of increasing counters
 	#directed connected acyclic graphs only
 	def topological_sort
 		@explored_nodes = Array.new(vertices.count, false)
@@ -207,6 +227,12 @@ class DirectedGraph
 		end
 		topo_order
 	end
+##########################END#################################################################
+
+#############################STRINGLY CONNECTED COMPONENTS USING DEPTH FIRST SEARCH##########
+#g: Directed graph object
+#g.strongly_connected_components will return number of component components in top five clusters in graph
+#ALGO:
 
 	def strongly_connected_components
 		@explored_nodes = Array.new(vertices.count, false)
@@ -279,6 +305,7 @@ class DirectedGraph
 		end
 		@scc << @components.uniq
 	end
+##########################################END######################################################
 
 	private :dfs_topological_order, :topological_order
 
