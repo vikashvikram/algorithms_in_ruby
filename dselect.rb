@@ -5,7 +5,8 @@ module DSelect
   end
 
   def quick_search_d(start, ending, index)
-    return nil if start >= ending and index != start
+    puts "#{self}.quick_search_d(start:#{start},ending:#{ending},index:#{index})"
+    return nil if start > ending and index != start
     pivot = d_pivot(start, ending)
     i = j = start
     pivot_point = nil
@@ -19,7 +20,7 @@ module DSelect
     swap(i,pivot_point)
     if pivot_point > index
       quick_search_d(start, pivot_point-1, index)
-    elsif i < index
+    elsif pivot_point < index
       quick_search_d(pivot_point+1, ending, index)
     else
       self[pivot_point] 
@@ -27,14 +28,16 @@ module DSelect
   end
 
   def d_pivot(start, ending)
+    puts "#{self}.d_pivot(start:#{start},ending:#{ending})"
     return self[start] if start >= ending
     median_arr = []
     start.step(ending, 5) do |i|
-      median_arr << self[i..i+5].compact
+      min = [i+4, ending].min
+      median_arr << self[i..min]
     end
     median_arr.each do |ar| ar.sort! end
-    medians = median_arr.map do |m| m[2] end.compact
-    NewArray.new(medians).dselect(medians.length/2)
+    medians = median_arr.map do |m| m[(m.length-1)/2] end
+    NewArray.new(medians).dselect((medians.length-1)/2)
   end
 
   def swap(index1, index2)
