@@ -41,6 +41,35 @@ class UndirectedGraph
 		end
 	end
 
+	###################KARGER'S MINIMUM CUT ALGORITHM#############################
+
+	def replace_edges(node1, node2)
+		label1, label2 = node1.label, node2.label
+		return if label2 == label1
+		node1.edges.each do |edge|
+			second_label = edge.node_labels.delete(label1)
+			remove_edge(edge)
+			add_edge(vertex(second_label), vertex(label2)) unless second_label == label2
+		end
+	end
+
+	def contract(node1, node2)
+		replace_edges(node1, node2)
+		@vertices[node1.label-1] = nil
+	end
+
+	def minimum_cut
+		random_vertex_array = (1..VERTEX_COUNT).to_a.sample(VERTEX_COUNT)
+		(VERTEX_COUNT-2).times do
+			label = random_vertex_array.shift
+			node = vertex(label)
+			node1, node2 = node.edges.sample.node_labels.map {|x| vertex(x)}
+			contract(node1, node2)
+		end
+		vertex(random_vertex_array.shift).edges.count
+	end
+	################################END#####################################
+
 ##################SHORTEST PATH ALGO USING BREADTH FIRST SEARCH######################
 #g : Undirected graph object and node1, node2 are nodes in g
 #g.shortest_path(node1, node2) to calculate shortest path between node1 and node1
