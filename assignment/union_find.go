@@ -1,11 +1,13 @@
 package main
 
-import "fmt"
-import "os"
-import "strings"
-import "bufio"
-import "strconv"
-import "sort"
+import (
+		"fmt"
+		"os"
+		"strings"
+		"bufio"
+		"strconv"
+		"sort"
+)
 
 type union_find struct {
 	parent []int64
@@ -58,16 +60,6 @@ func union(uf union_find, val1 int64, val2 int64) int64 {
 }
 
 func main() {
-	// uf := initialize(8)
-	// union(uf, 1, 3)
-	// union(uf, 5, 6)
-	// union(uf, 2, 4)
-	// union(uf, 1, 7)
-	// union(uf, 4, 8)
-	// union(uf, 3, 4)
-	// for i := int64(1); i <= 8; i++ {
-	// 	fmt.Println(find(uf, i))
-	// }
 	f, err := os.Open("clustering1.txt")
 	check(err)
 	scanner := bufio.NewScanner(f)
