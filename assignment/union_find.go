@@ -1,12 +1,12 @@
 package main
 
 import (
-		"fmt"
-		"os"
-		"strings"
-		"bufio"
-		"strconv"
-		"sort"
+	"fmt"
+	"os"
+	"strings"
+	"bufio"
+	"strconv"
+	"sort"
 )
 
 type union_find struct {
@@ -87,8 +87,8 @@ func main() {
 	sort.Ints(keys)
 	uf := initialize(count)
 	for _, k := range keys {
-    j := int64(len(dict[int64(k)]))
-    for x := 0; int64(x) < j; x += 2 {
+    j := len(dict[int64(k)])
+    for x := 0; x < j; x += 2 {
     	val1 := dict[int64(k)][int64(x)]
     	val2 := dict[int64(k)][int64(x+1)]
     	if find(uf, val1) != find(uf, val2) {

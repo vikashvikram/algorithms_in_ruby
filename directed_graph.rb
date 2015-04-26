@@ -40,7 +40,7 @@ class DirectedGraph
 		incoming_vertex(head).delete(tail)
 	end
 
-	#################################TOPOLOGICAL SORT USING DEPTH FIRST SEARCH###############################
+#################################TOPOLOGICAL SORT USING DEPTH FIRST SEARCH###############################
 #g: Connected Directed Acyclic Graph object
 #g.topological_order will return labels of all nodes of graph in topological order
 #ALGO:
