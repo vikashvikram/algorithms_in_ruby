@@ -11,7 +11,6 @@ func Walk(t *tree.Tree, ch chan int) {
 	if t == nil {
 		return
 	}
-	fmt.Println("===========", t.Value)
 	Walk(t.Left, ch)
 	ch <- t.Value
 	Walk(t.Right, ch)
@@ -29,8 +28,6 @@ func Walker(t *tree.Tree) <-chan int {
 // Same determines whether the trees
 // t1 and t2 contain the same values.
 func Same(t1, t2 *tree.Tree) bool {
-	fmt.Println(t1)
-	fmt.Println(t2)
 	c1, c2 := Walker(t1), Walker(t2)
 	slice1 := make([]int, cap(c1))
 	slice2 := make([]int, cap(c2))
